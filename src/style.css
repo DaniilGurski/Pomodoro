@@ -1,1 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&family=Roboto+Slab:wght@100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 @import "tailwindcss";
+
+@custom-variant red (&:where([data-theme=red], [data-theme=red] *));
+@custom-variant cyan (&:where([data-theme=cyan], [data-theme=cyan] *));
+@custom-variant purple (&:where([data-theme=purple], [data-theme=purple] *));
+
+@theme {
+  --color-*: initial;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-blue-950: #14172e;
+  --color-blue-900: #161932;
+  --color-blue-850: #1e213f;
+  --color-blue-100: #d7e0ff;
+  --color-blue-50: #eff1fa;
+
+  --color-gray-400: #bbbdcb;
+  --color-gray-200: #e4e2e2;
+
+  --color-cyan-300: #70f3f8;
+  --color-red-400: #f87070;
+  --color-purple-400: #d881f8;
+
+  --gradient-1: 109deg, rgba(46, 50, 90, 1) 0%, rgba(14, 17, 42, 1) 100%;
+
+  --font-sans: "Kumbh Sans", sans-serif;
+  --font-serif: "Roboto Slab", serif;
+  --font-mono: "Space Mono", monospace;
+}
+
+/* grid bg-conic from-red-400 to-blue-900 to-0% text-center */
+@layer components {
+  .progress-bar {
+    /* stroke-dashoffset: 1070; */
+
+    r: 110;
+
+    @media (width >= 40rem) {
+      r: 170;
+    }
+  }
+}
