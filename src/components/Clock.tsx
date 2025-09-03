@@ -3,7 +3,6 @@ import { useAtomValue } from "jotai";
 import { appConfigAtom, timeModeAtom } from "@/atoms";
 
 /* TODO: Add box shadow */
-
 export default function Clock() {
   const { timeSettings } = useAtomValue(appConfigAtom);
   const timeMode = useAtomValue(timeModeAtom);
@@ -61,12 +60,12 @@ export default function Clock() {
       clearInterval(intervalRef.current);
     }
     setTimeRemaining(timeSettings[timeMode] * 60);
-  }, [timeMode]);
+  }, [timeMode, timeSettings]);
 
   // When changing time settings in the app config
   useEffect(() => {
     setTimeRemaining(timeSettings[timeMode] * 60);
-  }, [timeSettings]);
+  }, [timeSettings, timeMode]);
 
   return (
     <div className="aspect-square w-72 rounded-full bg-linear-(--gradient-1) p-4 text-blue-100 sm:h-[410px] sm:w-[410px]">
