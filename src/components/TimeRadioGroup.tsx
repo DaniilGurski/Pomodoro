@@ -9,7 +9,7 @@ export default function TimeRadioGroup() {
 
   return (
     <RadioGroup
-      className="flex rounded-4xl bg-blue-900 p-2 text-xs font-bold"
+      className="flex rounded-4xl bg-blue-900 p-2 text-xs font-bold sm:text-sm"
       value={timeMode}
       onChange={setTimeMode}
       aria-label="time mode"

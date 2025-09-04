@@ -29,17 +29,22 @@
   --font-sans: "Kumbh Sans", sans-serif;
   --font-serif: "Roboto Slab", serif;
   --font-mono: "Space Mono", monospace;
+
+  --clock-drop-shadow:
+    -50px -50px 0px red,
+    50px 50px 0px blue
+      /* --clock-drop-shadow: drop-shadow(-50px -50px 100px #272c5a)
+    drop-shadow(50px 50px 100px #121530); */;
 }
 
-/* grid bg-conic from-red-400 to-blue-900 to-0% text-center */
 @layer components {
   .progress-bar {
-    /* stroke-dashoffset: 1070; */
+    --_progress-bar-radius: var(--progress-bar-radius, 110);
 
-    r: 110;
+    r: var(--_progress-bar-radius);
 
     @media (width >= 40rem) {
-      r: 170;
+      --progress-bar-radius: 170;
     }
   }
 }

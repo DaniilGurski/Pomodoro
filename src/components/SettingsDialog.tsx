@@ -103,14 +103,16 @@ export default function SettingsDialog() {
                       <Label className="text-gray-400"> pomodoro </Label>
                       <Input
                         className="max-w-36 rounded-lg bg-blue-50 px-4 py-3 tracking-[5px]"
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          const parsedInput = e.target.value
+                            ? parseInt(e.target.value)
+                            : 1;
+
                           setTimeSettings((prev) => ({
                             ...prev,
-                            pomodoro: e.target.value
-                              ? parseInt(e.target.value)
-                              : 1,
-                          }))
-                        }
+                            pomodoro: parsedInput > 0 ? parsedInput : 1,
+                          }));
+                        }}
                         defaultValue={timeSettings.pomodoro}
                         type="number"
                         inputMode="numeric"
@@ -121,14 +123,16 @@ export default function SettingsDialog() {
                       <Label className="text-gray-400"> short break </Label>
                       <Input
                         className="max-w-36 rounded-lg bg-blue-50 px-4 py-3 tracking-[5px]"
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          const parsedInput = e.target.value
+                            ? parseInt(e.target.value)
+                            : 1;
+
                           setTimeSettings((prev) => ({
                             ...prev,
-                            short: e.target.value
-                              ? parseInt(e.target.value)
-                              : 1,
-                          }))
-                        }
+                            short: parsedInput > 0 ? parsedInputd : 1,
+                          }));
+                        }}
                         defaultValue={timeSettings.short}
                         type="number"
                         inputMode="numeric"
@@ -139,12 +143,16 @@ export default function SettingsDialog() {
                       <Label className="text-gray-400"> long break </Label>
                       <Input
                         className="max-w-36 rounded-lg bg-blue-50 px-4 py-3 tracking-[5px]"
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          const parsedInput = e.target.value
+                            ? parseInt(e.target.value)
+                            : 1;
+
                           setTimeSettings((prev) => ({
                             ...prev,
-                            long: e.target.value ? parseInt(e.target.value) : 1,
-                          }))
-                        }
+                            long: parsedInput > 0 ? parsedInput : 1,
+                          }));
+                        }}
                         defaultValue={timeSettings.long}
                         type="number"
                         inputMode="numeric"

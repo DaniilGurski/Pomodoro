@@ -1,69 +1,41 @@
-# React + TypeScript + Vite
+# Pomodoro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Pomodoro React app with app theme settings and circular progress bar component.
 
-Currently, two official plugins are available:
+## Project hightlights
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Countdown component
 
-## Expanding the ESLint configuration
+- Circular progess bar
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Countdown component
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+To create this component, I would get the **initial time** using the selected time mode (pomodoro / short break / long break) as a key to the timeSettings object inside the application config atom. Then I converted it to seconds by multiplying it by 60, since the initial time for each mode is specified in minutes.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+Then I created a **remainingTime** state, because I wanted my component to remember it between renders, and an **isRunning** state to pause the countdown.
+I did this by storing the **interval ID** in a refand clearing it before resuming the countdown.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+To format the remaining time I used this little function:
 
 ```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+  const formatTime = (seconds: number) => {
+    const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const secs = String(seconds % 60).padStart(2, "0");
+    return `${mins}:${secs}`;
+  };
 ```
+
+### Circular progress bar
+
+Probably the most difficult part of this project. There are different methods for creating a circular progress bar, but I chose the SVG option because, from what I've heard, it looks better on small devices and simply allows for more customization (for example, rounded cups).
+Now you can look at the structure of the Clock component to see how everything is structured. It was a little tricky because of all the paddings in the design of this clock. SVG is essentially a circular bar positioned on top of a rounded div. Two properties were used to display the remaining time on the bar: **stroke-dasharray** and **stroke-dashoffset**. You can read about them in a good article, which I will link to below. The math for the progress is as follows:
+
+```js
+const RADIUS = window.matchMedia("(width >= 40rem)").matches ? 170 : 110;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+
+const progress = timeRemaining / INITIAL_TIME_SECONDS;
+const strokeDashoffset = CIRCUMFERENCE * (1 - progress);
+```
+
+- [A Friendly Introduction to SVG](https://www.joshwcomeau.com/svg/friendly-introduction-to-svg/)

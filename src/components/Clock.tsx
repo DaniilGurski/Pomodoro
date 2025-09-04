@@ -2,19 +2,24 @@ import { useEffect, useRef, useState } from "react";
 import { useAtomValue } from "jotai";
 import { appConfigAtom, timeModeAtom } from "@/atoms";
 
-/* TODO: Add box shadow */
 export default function Clock() {
   const { timeSettings } = useAtomValue(appConfigAtom);
   const timeMode = useAtomValue(timeModeAtom);
 
-  // in seconds
   const INITIAL_TIME_SECONDS = timeSettings[timeMode] * 60;
-  console.log(INITIAL_TIME_SECONDS);
   const [timeRemaining, setTimeRemaining] =
     useState<number>(INITIAL_TIME_SECONDS);
   const [isRunning, setIsRunning] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // SVG circle settings
+  const RADIUS = window.matchMedia("(width >= 40rem)").matches ? 170 : 110;
+  const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+
+  const progress = timeRemaining / INITIAL_TIME_SECONDS;
+  // Responsible for moving the stroke line
+  const strokeDashoffset = CIRCUMFERENCE * (1 - progress);
 
   const formatTime = (seconds: number) => {
     const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -75,7 +80,7 @@ export default function Clock() {
             {formatTime(timeRemaining)}
           </time>
           <button
-            className="cursor-pointer text-sm tracking-[13px] hover:text-red-400 sm:text-base"
+            className="red:hover:text-red-400 cyan:hover:text-cyan-300 purple:hover:text-purple-400 cursor-pointer text-sm tracking-[13px] sm:text-base"
             onClick={() => {
               if (isRunning && intervalRef.current) {
                 handlePause();
@@ -89,13 +94,15 @@ export default function Clock() {
           </button>
         </div>
 
-        <svg className="absolute h-full w-full">
+        <svg className="absolute h-full w-full rotate-z-[270deg]">
           <circle
-            className="progress-bar red:stroke-red-400 cyan:stroke-cyan-300 purple:stroke-purple-400 stroke-"
+            className="progress-bar red:stroke-red-400 cyan:stroke-cyan-300 purple:stroke-purple-400"
             cx="50%"
             cy="50%"
             strokeWidth="4"
             strokeLinecap="round"
+            strokeDasharray={CIRCUMFERENCE}
+            strokeDashoffset={strokeDashoffset}
             fill="none"
           ></circle>
         </svg>
