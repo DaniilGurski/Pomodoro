@@ -64,11 +64,13 @@ export default function Clock() {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
+    setIsRunning(false);
     setTimeRemaining(timeSettings[timeMode] * 60);
   }, [timeMode, timeSettings]);
 
   // When changing time settings in the app config
   useEffect(() => {
+    setIsRunning(false);
     setTimeRemaining(timeSettings[timeMode] * 60);
   }, [timeSettings, timeMode]);
 
