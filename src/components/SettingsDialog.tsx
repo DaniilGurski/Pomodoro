@@ -130,7 +130,7 @@ export default function SettingsDialog() {
 
                           setTimeSettings((prev) => ({
                             ...prev,
-                            short: parsedInput > 0 ? parsedInputd : 1,
+                            short: parsedInput > 0 ? parsedInput : 1,
                           }));
                         }}
                         defaultValue={timeSettings.short}
